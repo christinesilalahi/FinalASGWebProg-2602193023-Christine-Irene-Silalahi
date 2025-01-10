@@ -9,7 +9,17 @@
                 <div class="wishlist-item">
                     <img src="{{ asset('storage/' . $wishlist->user->profile_picture) }}" alt="{{ $wishlist->user->name }}" class="user-image">
                     <h5>{{ $wishlist->user->name }}</h5>
-                    <p>{{ implode(', ', json_decode($wishlist->user->field_of_work)) }}</p>
+
+                    @php
+                        $fieldOfWork = json_decode($wishlist->user->field_of_work);
+                    @endphp
+                    <p>
+                        @if (is_array($fieldOfWork))
+                            {{ implode(', ', $fieldOfWork) }}
+                        @else
+                            {{ $wishlist->user->field_of_work }}
+                        @endif
+                    </p>
                     
                     <form action="{{ route('wishlist.respond') }}" method="POST">
                         @csrf
